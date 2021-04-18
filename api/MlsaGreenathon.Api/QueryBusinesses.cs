@@ -24,7 +24,7 @@ namespace MlsaGreenathon.Api
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            [Table("Businesses")] CloudTable table,
+            [Table("Businesses", Connection = "DefaultStorageAccount")] CloudTable table,
             ILogger log)
         {
             var response = table.CreateQuery<Business>().Execute();
