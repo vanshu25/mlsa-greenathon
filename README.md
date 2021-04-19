@@ -4,6 +4,9 @@ This project is our contribution to the MLSA GreenAThon hackathon activity in Ap
 
 Powered by Azure Static Web Apps, React and Azure Functions.
 
+## [API Docs](docs/api.md)
+Refer to the dedicated [docs](docs/api.md).
+
 ## Configuration
 ### App Settings
 - `DefaultStorageAccount`: The connection string for the API's Azure storage account
