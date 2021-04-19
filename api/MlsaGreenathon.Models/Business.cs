@@ -1,4 +1,6 @@
-﻿namespace MlsaGreenathon.Models
+﻿using System;
+
+namespace MlsaGreenathon.Models
 {
     public class Business : Entity
     {
@@ -14,6 +16,8 @@
 
         
         public bool IsApproved { get; set; }
+
+        public DateTime SubmittedAt { get; set; } = DateTime.UtcNow;
 
         public Business()
         {

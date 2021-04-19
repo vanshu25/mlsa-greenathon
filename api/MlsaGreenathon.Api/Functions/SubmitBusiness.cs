@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Web.Http;
 using FluentValidation;
@@ -24,7 +25,7 @@ namespace MlsaGreenathon.Api.Functions
         [FunctionName("SubmitBusiness")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
+        [OpenApiRequestBody(MediaTypeNames.Application.Json, typeof(CreateBusinessDto), Required = true)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
@@ -41,13 +42,13 @@ namespace MlsaGreenathon.Api.Functions
             if (!validationResult.IsValid)
                 return new BadRequestErrorMessageResult(validationResult.ToString());
 
+            // Map
+            var entity = Defaults.Mapper.Map<Business>(request);
+
             // Insert into table
             try
             {
-                await table.ExecuteAsync(TableOperation.Insert(new Business
-                {
-                    Name = request.Name
-                }));
+                await table.ExecuteAsync(TableOperation.Insert(entity));
             }
             catch (Exception ex)
             {
