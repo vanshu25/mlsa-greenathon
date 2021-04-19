@@ -7,11 +7,6 @@ using MlsaGreenathon.Api.Properties;
 
 namespace MlsaGreenathon.Api.Requests
 {
-    public class QueryBusinessDto
-    {
-        public 
-    }
-
     public class CreateBusinessDto
     {
         public string Name { get; set; }
