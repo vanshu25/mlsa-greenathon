@@ -4,6 +4,15 @@
     {
         public string Name { get; set; }
 
+        public string AddressLine { get; set; }
+
+        public string Town { get; set; }
+
+        public string ZipCode { get; set; }
+
+        public string Country { get; set; }
+
+        
         public bool IsApproved { get; set; }
 
         public Business()

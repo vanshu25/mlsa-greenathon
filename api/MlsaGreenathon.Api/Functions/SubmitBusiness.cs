@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web.Http;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos.Table;
@@ -32,8 +34,14 @@ namespace MlsaGreenathon.Api.Functions
             var reader = new StreamReader(req.Body);
             var json = await reader.ReadToEndAsync();
 
-            var request = JsonConvert.DeserializeObject<CreateBusiness>(json);
+            var request = JsonConvert.DeserializeObject<CreateBusinessDto>(json);
 
+            // Validate
+            var validationResult = await new CreateBusinessDto.Validator().ValidateAsync(request);
+            if (!validationResult.IsValid)
+                return new BadRequestErrorMessageResult(validationResult.ToString());
+
+            // Insert into table
             try
             {
                 await table.ExecuteAsync(TableOperation.Insert(new Business
@@ -43,8 +51,8 @@ namespace MlsaGreenathon.Api.Functions
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-                throw;
+                log.LogError(ex, "Table insert operation failed");
+                return new InternalServerErrorResult();
             }
 
             return new OkResult();
