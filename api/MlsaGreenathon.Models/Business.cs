@@ -12,7 +12,7 @@ namespace MlsaGreenathon.Models
 
         public string ZipCode { get; set; }
 
-        public string Country { get; set; }
+        public string CountryIsoCode { get; set; }
 
         
         public bool IsApproved { get; set; }

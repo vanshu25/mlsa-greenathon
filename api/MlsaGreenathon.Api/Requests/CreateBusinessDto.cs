@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using FluentValidation;
+using MlsaGreenathon.Api.Properties;
 
 namespace MlsaGreenathon.Api.Requests
 {
+    public class QueryBusinessDto
+    {
+        public 
+    }
+
     public class CreateBusinessDto
     {
         public string Name { get; set; }
@@ -15,7 +22,7 @@ namespace MlsaGreenathon.Api.Requests
 
         public string ZipCode { get; set; }
 
-        public string Country { get; set; }
+        public string CountryIsoCode { get; set; }
 
         public class Validator : AbstractValidator<CreateBusinessDto>
         {
@@ -37,10 +44,13 @@ namespace MlsaGreenathon.Api.Requests
                     .NotEmpty()
                     .MaximumLength(30);
 
-                RuleFor(x => x.Country)
+                RuleFor(x => x.CountryIsoCode)
                     .NotEmpty()
-                    .MaximumLength(30);
+                    .Must(BeAValidIsoCountryCode);
             }
+
+            private static bool BeAValidIsoCountryCode(string isoCode) => 
+                Defaults.IsoCountryCodes.ToList().Exists(z => z.Code == isoCode);
         }
     }
 }
