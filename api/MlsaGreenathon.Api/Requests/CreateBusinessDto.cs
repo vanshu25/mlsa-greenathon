@@ -44,9 +44,17 @@ namespace MlsaGreenathon.Api.Requests
                     .NotEmpty()
                     .MaximumLength(20);
 
-                When(x => x.Logo != null, () => 
+                When(x => x.Logo != null, () =>
+                {
                     RuleFor(x => x.Logo.FileName)
-                        .Must(x => x.EndsWith(".png"))); // end with png
+                        .Must(x => x.EndsWith(".png")); // end with png
+
+                    RuleFor(x => x.Logo.ContentType)
+                        .Equal("image/png").WithMessage("The logo's MIME type must be 'image/png'");
+
+                    RuleFor(x => x.Logo.Length)
+                        .LessThanOrEqualTo(2000000).WithMessage("Logo must be less than 2 MB");
+                });
 
                 RuleFor(x => x.MissionStatement)
                     .NotEmpty()

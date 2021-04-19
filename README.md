@@ -1,8 +1,12 @@
-# MLSA Greenathon Project (#WeNeedAName)
+# MLSA Greenathon Project (Project Brave Forest)
 
 This project is our contribution to the MLSA GreenAThon hackathon activity in April 2021. As a reward, Microsoft will publish a blog post about it and plant a tree for us 🌱🍃
 
 Powered by Azure Static Web Apps, React and Azure Functions.
+
+## Configuration
+### App Settings
+- `DefaultStorageAccount`: The connection string for the API's Azure storage account
 
 ## Contributors
 Brought to you by some fellow MLSA members

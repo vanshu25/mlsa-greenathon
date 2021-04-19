@@ -26,7 +26,6 @@ namespace MlsaGreenathon.Api.Functions
         [FunctionName("SubmitBusiness")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        [OpenApiRequestBody("multipart/form-data", typeof(CreateBusinessDto), Required = true)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
@@ -73,13 +72,13 @@ namespace MlsaGreenathon.Api.Functions
                 return new InternalServerErrorResult();
             }
 
-            return new OkResult();
+            return new OkResult(); // TODO: Return created at result
         }
 
         private static async Task<Uri> UploadLogoAsync(IFormFile logo, ICloudBlob logoBlob)
         {
             await using var stream = logo.OpenReadStream();
-            logoBlob.Properties.ContentType = "image/png";
+            logoBlob.Properties.ContentType = logo.ContentType;
             await logoBlob.UploadFromStreamAsync(stream);
             return logoBlob.Uri;
         }
