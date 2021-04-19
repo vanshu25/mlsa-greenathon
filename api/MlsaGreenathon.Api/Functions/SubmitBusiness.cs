@@ -8,6 +8,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
@@ -30,6 +31,7 @@ namespace MlsaGreenathon.Api.Functions
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             [Table("Businesses", Connection = Defaults.DefaultStorageConnection)] CloudTable table,
+            [Blob("logos/{rand-guid}", FileAccess.Write)] ICloudBlob logoBlob,
             ILogger log)
         {
             if (!req.HasFormContentType)
@@ -57,7 +59,8 @@ namespace MlsaGreenathon.Api.Functions
             var entity = Defaults.Mapper.Map<Business>(request);
 
             // Upload logo to blob
-            // TODO:
+            if (request.Logo != null)
+                entity.LogoSource = (await UploadLogoAsync(request.Logo, logoBlob)).ToString();
 
             // Insert into table
             try
@@ -71,6 +74,14 @@ namespace MlsaGreenathon.Api.Functions
             }
 
             return new OkResult();
+        }
+
+        private static async Task<Uri> UploadLogoAsync(IFormFile logo, ICloudBlob logoBlob)
+        {
+            await using var stream = logo.OpenReadStream();
+            logoBlob.Properties.ContentType = "image/png";
+            await logoBlob.UploadFromStreamAsync(stream);
+            return logoBlob.Uri;
         }
     }
 }

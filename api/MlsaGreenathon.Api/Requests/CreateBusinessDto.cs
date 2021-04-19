@@ -31,6 +31,7 @@ namespace MlsaGreenathon.Api.Requests
 
         public string CountryIsoCode { get; set; }
 
+
         public class Validator : AbstractValidator<CreateBusinessDto>
         {
             public Validator()
@@ -39,6 +40,19 @@ namespace MlsaGreenathon.Api.Requests
                     .NotEmpty()
                     .MaximumLength(30);
 
+                RuleFor(x => x.Industry)
+                    .NotEmpty()
+                    .MaximumLength(20);
+
+                When(x => x.Logo != null, () => 
+                    RuleFor(x => x.Logo.FileName)
+                        .Must(x => x.EndsWith(".png"))); // end with png
+
+                RuleFor(x => x.MissionStatement)
+                    .NotEmpty()
+                    .MaximumLength(1000);
+
+                // Address
                 RuleFor(x => x.AddressLine)
                     .NotEmpty()
                     .MaximumLength(30);
@@ -53,7 +67,7 @@ namespace MlsaGreenathon.Api.Requests
 
                 RuleFor(x => x.CountryIsoCode)
                     .NotEmpty()
-                    .Must(BeAValidIsoCountryCode);
+                    .Must(BeAValidIsoCountryCode).WithMessage("'{PropertyValue}' is not a valid ISO 3166-1 country code");
             }
 
             private static bool BeAValidIsoCountryCode(string isoCode) => 
