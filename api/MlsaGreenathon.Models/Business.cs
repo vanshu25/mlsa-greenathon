@@ -6,6 +6,13 @@ namespace MlsaGreenathon.Models
     {
         public string Name { get; set; }
 
+        public string Industry { get; set; }
+
+        public string LogoSource { get; set; }
+
+        public string MissionStatement { get; set; }
+
+        // Address
         public string AddressLine { get; set; }
 
         public string Town { get; set; }

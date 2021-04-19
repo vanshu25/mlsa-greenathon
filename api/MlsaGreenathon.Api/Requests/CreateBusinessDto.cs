@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using AutoMapper;
+using AutoMapper.Configuration.Annotations;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using MlsaGreenathon.Api.Properties;
 
 namespace MlsaGreenathon.Api.Requests
@@ -11,6 +15,14 @@ namespace MlsaGreenathon.Api.Requests
     {
         public string Name { get; set; }
 
+        public string Industry { get; set; }
+
+        [IgnoreMap]
+        public IFormFile Logo { get; set; }
+
+        public string MissionStatement { get; set; }
+
+        // Address
         public string AddressLine { get; set; }
 
         public string Town { get; set; }

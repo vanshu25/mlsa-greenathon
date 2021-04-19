@@ -25,17 +25,28 @@ namespace MlsaGreenathon.Api.Functions
         [FunctionName("SubmitBusiness")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        [OpenApiRequestBody(MediaTypeNames.Application.Json, typeof(CreateBusinessDto), Required = true)]
+        [OpenApiRequestBody("multipart/form-data", typeof(CreateBusinessDto), Required = true)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             [Table("Businesses", Connection = Defaults.DefaultStorageConnection)] CloudTable table,
             ILogger log)
         {
-            var reader = new StreamReader(req.Body);
-            var json = await reader.ReadToEndAsync();
+            if (!req.HasFormContentType)
+                return new BadRequestErrorMessageResult("Request must be form-data");
 
-            var request = JsonConvert.DeserializeObject<CreateBusinessDto>(json);
+            var request = new CreateBusinessDto
+            {
+                Name = req.Form["name"],
+                Industry = req.Form["industry"],
+                MissionStatement = req.Form["missionStatement"],
+                AddressLine = req.Form["addressLine"],
+                Town = req.Form["town"],
+                CountryIsoCode = req.Form["countryIsoCode"],
+                ZipCode = req.Form["zipCode"],
+                Logo = req.Form.Files.GetFile("logo")
+            };
+
 
             // Validate
             var validationResult = await new CreateBusinessDto.Validator().ValidateAsync(request);
@@ -44,6 +55,9 @@ namespace MlsaGreenathon.Api.Functions
 
             // Map
             var entity = Defaults.Mapper.Map<Business>(request);
+
+            // Upload logo to blob
+            // TODO:
 
             // Insert into table
             try
