@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
-namespace MlsaGreenathon.Api
+namespace MlsaGreenathon.Api.Functions
 {
     public static class Function1
     {

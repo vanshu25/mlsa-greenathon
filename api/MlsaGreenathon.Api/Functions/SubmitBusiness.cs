@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -10,26 +11,43 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MlsaGreenathon.Api.Requests;
 using MlsaGreenathon.Models;
 using Newtonsoft.Json;
 
-namespace MlsaGreenathon.Api
+namespace MlsaGreenathon.Api.Functions
 {
-    public static class QueryBusinesses
+    public static class SubmitBusiness
     {
-        [FunctionName("QueryBusinesses")]
+        [FunctionName("SubmitBusiness")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            [Table("Businesses", Connection = "DefaultStorageAccount")] CloudTable table,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+            [Table("Businesses", Connection = Defaults.DefaultStorageConnection)] CloudTable table,
             ILogger log)
         {
-            var response = table.CreateQuery<Business>().Execute();
+            var reader = new StreamReader(req.Body);
+            var json = await reader.ReadToEndAsync();
 
-            return new OkObjectResult(response);
+            var request = JsonConvert.DeserializeObject<CreateBusiness>(json);
+
+            try
+            {
+                await table.ExecuteAsync(TableOperation.Insert(new Business
+                {
+                    Name = request.Name
+                }));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+
+            return new OkResult();
         }
     }
 }

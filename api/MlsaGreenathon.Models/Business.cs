@@ -6,6 +6,9 @@
 
         public bool IsApproved { get; set; }
 
-        public override string PartitionKey { get; set; } = "Business";
+        public Business()
+        {
+            PartitionKey = "business";
+        }
     }
 }

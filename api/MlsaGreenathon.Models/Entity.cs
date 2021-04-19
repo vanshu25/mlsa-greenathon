@@ -5,9 +5,7 @@ namespace MlsaGreenathon.Models
 {
     public abstract class Entity : TableEntity
     {
-        public string Id => RowKey;
-
-        public new abstract string PartitionKey { get; set; }
+        public string GetId() => RowKey;
 
         protected Entity()
         {
