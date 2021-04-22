@@ -63,3 +63,26 @@ div.input {
   font-weight: 600;
   font-size: 1.1rem;
 }
+
+.fab-overlay {
+  position: absolute;
+
+  bottom: 32px;
+  right: 32px;
+}
+
+button.fab {
+  text-transform: uppercase;
+  padding: 24px 32px;
+
+  color: $fg-dark;
+  font-weight: 700;
+
+  background-color: $bg-light;
+  outline: none;
+  border: none;
+  border-radius: 100px;
+  box-shadow: $shadow-default;
+
+  cursor: pointer;
+}

@@ -32,6 +32,10 @@ const App = () => {
         </div>
       </div>
     
+      <div className="fab-overlay">
+        <button className="fab">Add a new business</button>
+      </div>
+
     </div>
   );
 }
