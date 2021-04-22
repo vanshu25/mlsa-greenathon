@@ -3,7 +3,7 @@ import './App.scss';
 const App = () => {
   return (
     <div className="App">
-      <div className="sidebar">
+      <div className="sidebar open">
         <div className="heading">
           <span className="label">Sort and filter</span>
         </div>
@@ -30,6 +30,10 @@ const App = () => {
             <input id="type" type="text"/>
           </div>
         </div>
+      </div>
+
+      <div className="search-box">
+        <input type="text" name="searchBox" id="searchBox" placeholder="Search a business..."/>
       </div>
     
       <div className="fab-overlay">
