@@ -1,5 +1,5 @@
 
-import {AzureMap, AzureMapsProvider, IAzureMapOptions} from 'react-azure-maps'
+import {AzureMap, AzureMapsProvider} from 'react-azure-maps'
 import {AuthenticationType} from 'azure-maps-control'
 import './App.scss';
 
