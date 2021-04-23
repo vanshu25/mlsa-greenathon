@@ -1,0 +1,70 @@
+@import '../styles/variables.scss';
+
+$sidebar-width: 300px;
+
+.sidebar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -$sidebar-width - 32px*2;
+  display: flex;
+  z-index: 100;
+
+  transition: left 0.25s;
+
+  &.open {
+    left: 0;
+
+    .sidebar-pull {
+      box-shadow: none;
+
+      > .icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .sidebar-container {
+    width: $sidebar-width;
+    padding: 32px;
+    background: $bg-light;
+    box-shadow: $shadow-pane;
+  }
+
+  .sidebar-pull {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    
+    padding: 24px 8px;
+    
+    background: $bg-light;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: $shadow-pane;
+    
+    cursor: pointer;
+  
+    .label {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: $fg-dark;
+      padding-right: 2px;
+    }
+    
+    .icon {
+      padding-top: 50%;
+      font-size: 24px;
+
+      transition: transform 0.3s;
+      
+      > img {
+        height: 25px;
+      }
+    }
+  }
+}
+
