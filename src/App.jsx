@@ -1,12 +1,14 @@
+import { Sidebar, SearchBox } from './components';
+
 import {AzureMap, AzureMapsProvider} from 'react-azure-maps'
 import {AuthenticationType} from 'azure-maps-control'
+
 import './App.scss';
-import { Sidebar, SearchBox } from './components';
 
 const azureMapOptions = {
   authOptions: {
-      authType: AuthenticationType.subscriptionKey,
-      subscriptionKey: 'Ea_uzBbOhHmVPM5UjV-vEoW7wRw0bO-RTc7bo7AhtIw'
+    authType: AuthenticationType.subscriptionKey,
+    subscriptionKey: 'Ea_uzBbOhHmVPM5UjV-vEoW7wRw0bO-RTc7bo7AhtIw'
   },
 }
 
