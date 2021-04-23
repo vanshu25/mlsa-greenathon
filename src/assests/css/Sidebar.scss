@@ -1,0 +1,118 @@
+$bg-light: #F1F1F1;
+$bg-dark: #C4C4C4;
+$fg-dark: #757575;
+$fg-darker: #444444;
+
+$green: #4DAA67;
+$primary: $green;
+$primary-fg: white;
+
+$corners: 6px;
+
+$shadow-pane: 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,0,0,0.20);
+$shadow-element: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20);
+
+.sidebar {
+   
+    // padding: 32px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -640px;
+    display: flex;
+    z-index: 100;
+  
+    &.open {
+      left: 0;
+    }
+  }
+  .first{
+    padding: 32px;
+    background: $bg-light;
+    box-shadow: $shadow-pane;
+    width: 300px;
+    // display: none;
+  }
+  .first-close{
+    display: none;
+  }
+  .second{
+    cursor: pointer;
+    position: absolute;
+    left:364px;
+    top:36%;
+    padding: 5px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background: $bg-light;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    // box-shadow: 0px -16px 24px -2px rgb(0 0 0 / 14%), 0 -6px 30px -5px rgb(0 0 0 / 12%), 0 -8px 10px -5px rgb(0 0 0 / 20%);
+
+  }
+  .second-close{
+    cursor: pointer;
+    position: absolute;
+    left:0px;
+    top:36%;
+    padding: 5px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background: $bg-light;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    flex-direction: row;
+  }
+  .filterfirst{
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: $fg-dark;
+    padding-right: 2px;
+
+  }
+  .filtersec{
+    padding-top: 50%;
+    font-size: 24px;
+  }
+  .filtersec>img{
+    height: 25px;
+  }
+  div.input {
+    input[type=text],
+    select {
+      display: block;
+      width: 100%;
+  
+      color: $fg-darker;
+      font-size: 1.2rem;
+  
+      background: none;
+      border: none;
+      border-bottom: $fg-dark solid 2px;
+  
+      outline: none;
+  
+      &:active, &:focus, &:hover {
+        border-color: $primary;
+      }
+    }
+  
+    margin-bottom: 36px;
+  }
+  .heading {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  
+.label {
+  text-transform: uppercase;
+  color: $fg-dark;
+
+  font-weight: 600;
+  font-size: 1.1rem;
+}
