@@ -44,7 +44,7 @@ function Sidebar() {
           Filter
         </span>
         <span className="icon">
-          <img src={Arrow} />
+          <img src={Arrow} alt="" />
         </span>
       </div>
     </div>
