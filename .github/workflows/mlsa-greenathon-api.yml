@@ -4,6 +4,8 @@ on:
     branches:
     - main
 
+  workflow_dispatch:
+
 env:
   AZURE_FUNCTIONAPP_NAME: mlsa-greenathon
   AZURE_FUNCTIONAPP_PACKAGE_PATH: MlsaGreenathon.Api\published
