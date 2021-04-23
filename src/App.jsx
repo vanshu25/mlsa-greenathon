@@ -1,8 +1,7 @@
-
 import {AzureMap, AzureMapsProvider} from 'react-azure-maps'
 import {AuthenticationType} from 'azure-maps-control'
 import './App.scss';
-import Sidebar from './components/Sidebar';
+import { Sidebar, SearchBox } from './components';
 
 const azureMapOptions = {
   authOptions: {
@@ -19,10 +18,8 @@ const App = () => {
           <div className="map-container">
             <AzureMap options={azureMapOptions} />
           </div>
-          <Sidebar/>
-          <div className="search-box">
-            <input type="text" name="searchBox" id="searchBox" placeholder="Search a business..."/>
-          </div>
+          <Sidebar />
+          <SearchBox />
         
           <div className="fab-overlay">
             <button className="fab">Add a new business</button>
