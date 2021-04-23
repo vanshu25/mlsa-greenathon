@@ -1,76 +1,7 @@
-// Colors
-$bg-light: #F1F1F1;
-$bg-dark: #C4C4C4;
-$fg-dark: #757575;
-$fg-darker: #444444;
-
-$green: #4DAA67;
-$primary: $green;
-$primary-fg: white;
-
-$corners: 6px;
-
-$shadow-pane: 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,0,0,0.20);
-$shadow-element: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20);
+@import 'styles/variables.scss';
 
 body, html {
   font-family: Arial, Helvetica, sans-serif;
-}
-
-.sidebar {
-  background: $bg-light;
-  box-shadow: $shadow-pane;
-
-  padding: 32px;
-  width: 340px;
-
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-  left: -640px;
-
-  z-index: 100;
-
-  &.open {
-    left: 0;
-  }
-}
-
-div.input {
-  input[type=text],
-  select {
-    display: block;
-    width: 100%;
-
-    color: $fg-darker;
-    font-size: 1.2rem;
-
-    background: none;
-    border: none;
-    border-bottom: $fg-dark solid 2px;
-
-    outline: none;
-
-    &:active, &:focus, &:hover {
-      border-color: $primary;
-    }
-  }
-
-  margin-bottom: 36px;
-}
-
-.heading {
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.label {
-  text-transform: uppercase;
-  color: $fg-dark;
-
-  font-weight: 600;
-  font-size: 1.1rem;
 }
 
 .fab-overlay {
@@ -160,6 +91,42 @@ div.button-group {
       color: $primary-fg;
     }
   }
+}
+
+div.input {
+  input[type=text],
+  select {
+    display: block;
+    width: 100%;
+
+    color: $fg-darker;
+    font-size: 1.2rem;
+
+    background: none;
+    border: none;
+    border-bottom: $fg-dark solid 2px;
+
+    outline: none;
+
+    &:active, &:focus, &:hover {
+      border-color: $primary;
+    }
+  }
+
+  margin-bottom: 36px;
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: 48px;
+} 
+  
+.label {
+  text-transform: uppercase;
+  color: $fg-dark;
+
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 
 .map-container {
