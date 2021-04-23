@@ -8,11 +8,11 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_NAME: mlsa-greenathon
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: MlsaGreenathon.Api\published
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: api/MlsaGreenathon.Api\published
   AZURE_FUNCTIONAPP_PUBLISH_PROFILE: ${{ secrets.MLSA_GREENATHON_FFFF }}
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 3.1.x
-  WORKING_DIRECTORY: MlsaGreenathon.Api
+  WORKING_DIRECTORY: api/MlsaGreenathon.Api
 
 jobs:
   build-and-deploy:
