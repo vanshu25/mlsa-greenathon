@@ -7,6 +7,7 @@ import { AzureMap, AzureMapsProvider } from 'react-azure-maps'
 import { AuthenticationType } from 'azure-maps-control'
 
 import './App.scss';
+import ModalCloseButton from './components/ModalCloseButton';
 
 const azureMapOptions = {
   authOptions: {
@@ -18,7 +19,9 @@ const azureMapOptions = {
 Modal.setAppElement('#root');
 
 const App = () => {
-  const [ submitBusinessModelIsOpen ,setSubmitBusinessModalOpen ] = React.useState(false);
+  const [submitBusinessModelIsOpen, setSubmitBusinessModalOpen] = React.useState(false);
+  
+  const closeModal = () => setSubmitBusinessModalOpen(false);
 
   return (
     <div className="App">
@@ -35,6 +38,7 @@ const App = () => {
             shouldCloseOnOverlayClick={true}
             shouldCloseOnEsc={true}>
             <SubmitBusinessForm />
+            <ModalCloseButton onModalClose={closeModal} />
           </Modal>
         
           <div className="fab-overlay">

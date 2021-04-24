@@ -1,0 +1,27 @@
+@import '../styles/variables.scss';
+
+.close-btn {
+  position: absolute;
+  top: $d-4;
+  right: $d-4 + $d-1;
+
+  cursor: pointer;
+
+  border: transparent solid 3px;
+  border-radius: 100%;
+
+  padding: 8px;
+
+  width: 25px;
+  height: 25px;
+
+  transition: border 0.15s;
+
+  &:hover {
+    border-color: $primary;
+  }
+
+  > img {
+    height: inherit;
+  }
+}
