@@ -1,12 +1,13 @@
 @import '../styles/variables.scss';
 
 $sidebar-width: 300px;
+$sidebar-padding: $d-4;
 
 .sidebar {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: -$sidebar-width - 32px*2;
+  left: -$sidebar-width - $sidebar-padding * 2;
   display: flex;
   z-index: 100;
 
@@ -26,7 +27,7 @@ $sidebar-width: 300px;
 
   .sidebar-container {
     width: $sidebar-width;
-    padding: 32px;
+    padding: $sidebar-padding;
     background: $bg-light;
     box-shadow: $shadow-pane;
   }
@@ -36,7 +37,7 @@ $sidebar-width: 300px;
     flex-direction: row;
     align-self: center;
     
-    padding: 24px 8px;
+    padding: $d-3 $d-1;
     
     background: $bg-light;
     border-top-right-radius: 20px;
@@ -57,7 +58,7 @@ $sidebar-width: 300px;
     
     .icon {
       padding-top: 50%;
-      font-size: 24px;
+      font-size: $d-3;
 
       transition: transform 0.3s;
       

@@ -7,13 +7,13 @@ body, html {
 .fab-overlay {
   position: absolute;
 
-  bottom: 32px;
-  right: 32px;
+  bottom: $d-4;
+  right: $d-4;
 }
 
 button.fab {
   text-transform: uppercase;
-  padding: 24px 32px;
+  padding: $d-3 $d-4;
 
   color: $fg-dark;
   font-weight: 700;
@@ -37,7 +37,7 @@ div.button-group {
   border-radius: $corners;
 
   width: 100%;
-  padding-top: 8px;
+  padding-top: $d-1;
 
   button {
     text-transform: uppercase;
@@ -94,7 +94,7 @@ div.input {
 
 .heading {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: $d-1 + $d-4;
 } 
   
 .label {
