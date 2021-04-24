@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web.Http;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos.Table;
@@ -11,6 +13,8 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MlsaGreenathon.Api.Data;
+using MlsaGreenathon.Api.Database;
 using MlsaGreenathon.Api.Requests;
 using MlsaGreenathon.Models;
 
@@ -24,31 +28,43 @@ namespace MlsaGreenathon.Api.Functions
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             [Table("Businesses", Connection = Defaults.DefaultStorageConnection)] CloudTable table,
             ILogger log)
         {
             // Bind query from router query
-            var query = new QueryBusinessDto();
-            query = GetModelFromQueryParameters(req.Query);
+            QueryBusinessParameters query;
+
+            try
+            {
+                query = GetModelFromQueryParameters(req.Query);
+            }
+            catch (ValidationException ex)
+            {
+                return new BadRequestErrorMessageResult(ex.Message);
+            }
 
             // Create actual query
-            var tableQuery = table.CreateQuery<Business>();
+            var repository = new BusinessRepository(table);
 
-            var response = table.CreateQuery<Business>().Execute();
-
-            return new OkObjectResult(response);
+            try
+            {
+                var results = repository.QueryAsync(query);
+                return new OkObjectResult(results);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, "Couldn't retrieve items using query {Query}", query);
+                return new InternalServerErrorResult();
+            }
         }
 
-        private static QueryBusinessDto GetModelFromQueryParameters(IQueryCollection query)
+        private static QueryBusinessParameters GetModelFromQueryParameters(IQueryCollection query)
         {
-            var dto = new QueryBusinessDto();
+            var dto = new QueryBusinessParameters();
 
             if (query["take"].FirstOrDefault() is string take)
                 dto.Take = Convert.ToInt32(take);
-
-            if (query["skip"].FirstOrDefault() is string skip)
-                dto.Skip = Convert.ToInt32(skip);
 
             if (query["term"].FirstOrDefault() is string term)
                 dto.Term = term;
@@ -56,7 +72,7 @@ namespace MlsaGreenathon.Api.Functions
             if (query["isoCountryCode"].FirstOrDefault() is string isoCountryCode)
                 dto.IsoCountryCode = isoCountryCode;
 
-            // TODO: Validate query DTO
+            new QueryBusinessParameters.Validator().ValidateAndThrow(dto);
 
             return dto;
         }
