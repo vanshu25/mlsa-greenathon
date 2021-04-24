@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Formik, Field, Form } from "formik";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 
 const FormSchema = Yup.object().shape({
@@ -63,26 +63,32 @@ const SubmitBusinessForm = () => {
             <div className="input">
               <label htmlFor="name" className="label">Name</label>
               <Field name="name" id="name" type="text" />
+              <ErrorMessage name="name" />
             </div>
             <div className="input">
               <label htmlFor="address" className="label">Address</label>
               <Field name="address" id="address" type="text" />
+              <ErrorMessage name="address" />
             </div>
             <div className="input">
               <label htmlFor="industry" className="label">Industry</label>
               <Field name="industry" id="industry" type="text" />
+              <ErrorMessage name="industry" />
             </div>
             <div className="input">
               <label htmlFor="country" className="label">Country</label>
               <Field name="country" id="country" type="text" />
+              <ErrorMessage name="country" />
             </div>
             <div className="input">
               <label htmlFor="logo" className="label">Upload your logo</label>
               <Field name="logo" id="logo" type="text" />
+              <ErrorMessage name="logo" />
             </div>
             <div className="input">
               <label htmlFor="mission" className="label">Mission statement</label>
               <Field name="mission" id="mission" type="text" />
+              <ErrorMessage name="mission" />
             </div>
           </div>
 
