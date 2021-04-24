@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 
-import { Sidebar, SearchBox, SubmitBusinessForm } from './components';
+import { Sidebar, SearchBox, SubmitBusinessForm, ModalCloseButton } from './components';
+import { queryBusiness } from './services/api';
 
 import { AzureMap, AzureMapsProvider } from 'react-azure-maps'
 import { AuthenticationType } from 'azure-maps-control'
 
 import './App.scss';
-import ModalCloseButton from './components/ModalCloseButton';
 
 const azureMapOptions = {
   authOptions: {
@@ -19,9 +19,15 @@ const azureMapOptions = {
 Modal.setAppElement('#root');
 
 const App = () => {
-  const [submitBusinessModelIsOpen, setSubmitBusinessModalOpen] = React.useState(false);
-  
+  const [submitBusinessModelIsOpen, setSubmitBusinessModalOpen] = useState(false);
   const closeModal = () => setSubmitBusinessModalOpen(false);
+
+  const [businesses, setBusinesses] = useState([]);
+
+  useEffect(() => {
+    queryBusiness()
+      .then(x => setBusinesses(x));
+  }, []);
 
   return (
     <div className="App">

@@ -40,18 +40,19 @@ const initialValues = {
   address: '',
   industry: '',
   country: '',
-  logo: '',
+  logo: null,
   mission: ''
 };
 
-const SubmitBusinessForm = () => {
+const SubmitBusinessForm = (props = { onSubmitForm: (payload) => { }}) => {
   return (
     <div>
       <Formik initialValues={initialValues}
         validationSchema={FormSchema}
         onSubmit={values => {
-          // same shape as initial values
-          console.log(values);
+          props.onSubmitForm({
+            ...values
+          })
         }}
       >
         <Form>
@@ -82,7 +83,7 @@ const SubmitBusinessForm = () => {
             </div>
             <div className="input">
               <label htmlFor="logo" className="label">Upload your logo</label>
-              <Field name="logo" id="logo" type="text" />
+              <Field name="logo" id="logo" type="file" />
               <ErrorMessage name="logo" />
             </div>
             <div className="input">
