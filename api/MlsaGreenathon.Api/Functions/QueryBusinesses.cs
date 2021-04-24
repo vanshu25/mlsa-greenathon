@@ -13,6 +13,8 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MlsaGreenathon.Api.Data;
+using MlsaGreenathon.Api.Database;
 using MlsaGreenathon.Api.Requests;
 using MlsaGreenathon.Models;
 
@@ -31,7 +33,7 @@ namespace MlsaGreenathon.Api.Functions
             ILogger log)
         {
             // Bind query from router query
-            QueryBusinessParametersDto query;
+            QueryBusinessParameters query;
 
             try
             {
@@ -43,19 +45,11 @@ namespace MlsaGreenathon.Api.Functions
             }
 
             // Create actual query
-            // TODO: Move to repository
-            var queryable = table.CreateQuery<Business>()
-                .Where(x => x.IsApproved);
-
-            if (!string.IsNullOrEmpty(query.IsoCountryCode))
-                queryable = queryable.Where(x => x.CountryIsoCode == query.IsoCountryCode);
-
-            if (!string.IsNullOrEmpty(query.Term))
-                queryable = queryable.Where(x => x.Name.Equals(query.Term));
+            var repository = new BusinessRepository(table);
 
             try
             {
-                var results = queryable.Take(query.Take).ToList();
+                var results = repository.QueryAsync(query);
                 return new OkObjectResult(results);
             }
             catch (Exception ex)
@@ -65,9 +59,9 @@ namespace MlsaGreenathon.Api.Functions
             }
         }
 
-        private static QueryBusinessParametersDto GetModelFromQueryParameters(IQueryCollection query)
+        private static QueryBusinessParameters GetModelFromQueryParameters(IQueryCollection query)
         {
-            var dto = new QueryBusinessParametersDto();
+            var dto = new QueryBusinessParameters();
 
             if (query["take"].FirstOrDefault() is string take)
                 dto.Take = Convert.ToInt32(take);
@@ -78,7 +72,7 @@ namespace MlsaGreenathon.Api.Functions
             if (query["isoCountryCode"].FirstOrDefault() is string isoCountryCode)
                 dto.IsoCountryCode = isoCountryCode;
 
-            new QueryBusinessParametersDto.Validator().ValidateAndThrow(dto);
+            new QueryBusinessParameters.Validator().ValidateAndThrow(dto);
 
             return dto;
         }

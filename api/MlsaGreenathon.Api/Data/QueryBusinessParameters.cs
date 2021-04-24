@@ -1,9 +1,8 @@
-﻿using System.Text.Json.Serialization;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace MlsaGreenathon.Api.Requests
+namespace MlsaGreenathon.Api.Data
 {
-    public class QueryBusinessParametersDto
+    public class QueryBusinessParameters
     {
         public int Take { get; set; } = 30;
 
@@ -11,7 +10,7 @@ namespace MlsaGreenathon.Api.Requests
 
         public string IsoCountryCode { get; set; }
 
-        public class Validator : AbstractValidator<QueryBusinessParametersDto>
+        public class Validator : AbstractValidator<QueryBusinessParameters>
         {
             public Validator()
             {
