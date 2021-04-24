@@ -1,0 +1,36 @@
+@import '../styles/variables.scss';
+
+.search-box {
+  position: absolute;
+  top: $d-4;
+
+  left: $d-4;
+  right: $d-4;
+
+  @media (min-width: $width-md) {
+    left: 100px;
+    right: 100px;
+  }
+
+  @media (min-width: $width-l) {
+    left: 320px;
+    right: 320px;
+  }
+
+  background-color: $bg-light;
+  box-shadow: $shadow-element;
+  border-radius: $corners;
+
+  padding: $d-3;
+
+  input {
+    width: 100%;
+    font-size: 1.6rem;
+
+    color: $fg-darker;
+
+    background: none;
+    outline: none;
+    border: none;
+  }
+}

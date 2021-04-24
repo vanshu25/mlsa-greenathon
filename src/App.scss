@@ -1,0 +1,114 @@
+@import 'styles/variables.scss';
+
+body, html {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.fab-overlay {
+  position: absolute;
+
+  bottom: $d-4;
+  right: $d-4;
+}
+
+button.fab {
+  text-transform: uppercase;
+  padding: $d-3 $d-4;
+
+  color: $fg-dark;
+  font-weight: 700;
+
+  background-color: $bg-light;
+  outline: none;
+  border: none;
+  border-radius: 100px;
+  box-shadow: $shadow-element;
+
+  cursor: pointer;
+
+  &:active, &:hover {
+    color: $primary-fg;
+    background-color: $primary;
+  }
+}
+
+div.button-group {
+  display: flex;
+  border-radius: $corners;
+
+  width: 100%;
+  padding-top: $d-1;
+
+  button {
+    text-transform: uppercase;
+    font-weight: 600;
+    color: $fg-darker;
+
+    cursor: pointer;
+
+    width: 100%;
+    padding: 12px;
+    
+    background-color: $bg-dark;
+    outline: none;
+    border: none;
+    border-radius: 0;
+
+    &:first-of-type {
+      border-radius: $corners 0px 0px $corners;
+    }
+
+    &:last-of-type {
+      border-radius: 0px $corners $corners 0px;
+    }
+
+    &.active {
+      background-color: $primary;
+      color: $primary-fg;
+    }
+  }
+}
+
+div.input {
+  input[type=text],
+  select {
+    display: block;
+    width: 100%;
+
+    color: $fg-darker;
+    font-size: 1.2rem;
+
+    background: none;
+    border: none;
+    border-bottom: $fg-dark solid 2px;
+
+    outline: none;
+
+    &:active, &:focus, &:hover {
+      border-color: $primary;
+    }
+  }
+
+  margin-bottom: 36px;
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: $d-1 + $d-4;
+} 
+  
+.label {
+  text-transform: uppercase;
+  color: $fg-dark;
+
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.map-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
