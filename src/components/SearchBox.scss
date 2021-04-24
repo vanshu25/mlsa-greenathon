@@ -23,3 +23,9 @@
     border: none;
   }
 }
+@media (max-width: 700px) {
+  .search-box{
+    left:32px;
+    right:32px;
+  }
+}

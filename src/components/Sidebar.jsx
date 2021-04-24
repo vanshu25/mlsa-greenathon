@@ -4,7 +4,7 @@ import './Sidebar.scss'
 import Arrow from "../assets/icons/arrow_filter.svg"
 
 function Sidebar() {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
