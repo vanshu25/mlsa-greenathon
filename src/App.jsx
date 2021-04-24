@@ -1,7 +1,10 @@
-import { Sidebar, SearchBox } from './components';
+import React from 'react';
+import Modal from 'react-modal';
 
-import {AzureMap, AzureMapsProvider} from 'react-azure-maps'
-import {AuthenticationType} from 'azure-maps-control'
+import { Sidebar, SearchBox, SubmitBusinessForm } from './components';
+
+import { AzureMap, AzureMapsProvider } from 'react-azure-maps'
+import { AuthenticationType } from 'azure-maps-control'
 
 import './App.scss';
 
@@ -12,7 +15,11 @@ const azureMapOptions = {
   },
 }
 
+Modal.setAppElement('#root');
+
 const App = () => {
+  const [ submitBusinessModelIsOpen ,setSubmitBusinessModalOpen ] = React.useState(false);
+
   return (
     <div className="App">
       <AzureMapsProvider>
@@ -22,9 +29,16 @@ const App = () => {
           </div>
           <Sidebar />
           <SearchBox />
+
+          <Modal className="modal"
+            isOpen={submitBusinessModelIsOpen}
+            shouldCloseOnOverlayClick={true}
+            shouldCloseOnEsc={true}>
+            <SubmitBusinessForm />
+          </Modal>
         
           <div className="fab-overlay">
-            <button className="fab">Add a new business</button>
+            <button className="fab" onClick={() => setSubmitBusinessModalOpen(true)}>Add a new business</button>
           </div>
         </div>
       </AzureMapsProvider>

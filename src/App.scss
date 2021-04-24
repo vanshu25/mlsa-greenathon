@@ -112,3 +112,54 @@ div.input {
   bottom: 0;
   left: 0;
 }
+
+.modal {
+  background-color: $bg-light;
+  padding: $d-4 + $d-2;
+  box-shadow: $shadow-element;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  z-index: 20;
+
+  @media (min-width: $width-md) {
+    width: 500px;
+    border-radius: $corners;
+  
+    margin: 0;
+    
+    top: 50%;
+    right: initial;
+    left: 50%;
+    bottom: initial;
+
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}
+
+form {
+  button[type="submit"] {
+    background-color: $primary;
+    
+    color: $primary-fg;
+    border: none;
+    outline: none;
+    padding: $d-2 $d-3;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    font-weight: 700;
+
+    cursor: pointer;
+    border-radius: $corners * 2;
+  }
+}
