@@ -5,7 +5,7 @@ import { Sidebar, SearchBox, SubmitBusinessForm, ModalCloseButton } from './comp
 import { queryBusiness, submitBusiness } from './services/api';
 
 import { AzureMap, AzureMapsProvider } from 'react-azure-maps'
-import { AuthenticationType } from 'azure-maps-control'
+import { AuthenticationType, data } from 'azure-maps-control'
 
 import './App.scss';
 
@@ -30,8 +30,12 @@ const App = () => {
   }, []);
 
   const handleSubmitBusiness = (values) => {
-    console.log(values)
-    submitBusiness(values);
+    submitBusiness(values)
+      .then(() => {
+        alert('Thanks for submitting your business. Your business will be displayed on the map once it has been approved by the website owners.');
+        closeModal();
+      })
+      .catch(err => alert(err));
   }
 
   return (
