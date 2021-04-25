@@ -1,7 +1,11 @@
 import React from 'react';
 
+
+import { CreateBusiness } from '../services/api';
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from 'yup';
+
+import countries from '../assets/static/iso_countries.json';
 
 const FormSchema = Yup.object().shape({
   name: Yup.string()
@@ -24,27 +28,24 @@ const FormSchema = Yup.object().shape({
     .max(50)
     .required(),
 
-  logo: Yup.string()
-    .min(2)
-    .max(50)
-    .required(),
-
   mission: Yup.string()
     .min(2)
     .max(50)
     .required(),
 });
 
-const initialValues = {
+const initialValues: CreateBusiness = {
   name: '',
-  address: '',
+  addressLine: '',
+  town: '',
   industry: '',
-  country: '',
-  logo: null,
-  mission: ''
+  zipCode: '',
+  countryIsoCode: '',
+  logo: new Blob(),
+  missionStatement: ''
 };
 
-const SubmitBusinessForm = (props = { onSubmitForm: (payload) => { }}) => {
+const SubmitBusinessForm = (props = { onSubmitForm: (payload: CreateBusiness) => { } }) => {
   return (
     <div>
       <Formik initialValues={initialValues}
@@ -66,30 +67,49 @@ const SubmitBusinessForm = (props = { onSubmitForm: (payload) => { }}) => {
               <Field name="name" id="name" type="text" />
               <ErrorMessage name="name" />
             </div>
+
             <div className="input">
-              <label htmlFor="address" className="label">Address</label>
-              <Field name="address" id="address" type="text" />
-              <ErrorMessage name="address" />
+              <label htmlFor="addressLine" className="label">Address</label>
+              <Field name="addressLine" id="addressLine" type="text" />
+              <ErrorMessage name="addressLine" />
             </div>
+
+            <div className="input">
+              <label htmlFor="town" className="label">Address</label>
+              <Field name="town" id="town" type="text" />
+              <ErrorMessage name="town" />
+            </div>
+
+            <div className="input">
+              <label htmlFor="zipCode" className="label">Address</label>
+              <Field name="zipCode" id="zipCode" type="text" />
+              <ErrorMessage name="zipCode" />
+            </div>
+
             <div className="input">
               <label htmlFor="industry" className="label">Industry</label>
               <Field name="industry" id="industry" type="text" />
               <ErrorMessage name="industry" />
             </div>
+
             <div className="input">
-              <label htmlFor="country" className="label">Country</label>
-              <Field name="country" id="country" type="text" />
-              <ErrorMessage name="country" />
+              <label htmlFor="countryIsoCode" className="label">Country</label>
+              <select name="countryIsoCode">
+                {countries.map(x => <option key={x.code} value={x.code}>{x.name}</option>)}
+              </select>
+              <ErrorMessage name="countryIsoCode" />
             </div>
+
             <div className="input">
               <label htmlFor="logo" className="label">Upload your logo</label>
-              <Field name="logo" id="logo" type="file" />
+              <input name="logo" id="logo" type="file" />
               <ErrorMessage name="logo" />
             </div>
+
             <div className="input">
-              <label htmlFor="mission" className="label">Mission statement</label>
-              <Field name="mission" id="mission" type="text" />
-              <ErrorMessage name="mission" />
+              <label htmlFor="missionStatement" className="label">Mission statement</label>
+              <Field name="missionStatement" id="missionStatement" type="text" />
+              <ErrorMessage name="missionStatement" />
             </div>
           </div>
 

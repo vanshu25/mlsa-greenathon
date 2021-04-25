@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 
 import { Sidebar, SearchBox, SubmitBusinessForm, ModalCloseButton } from './components';
-import { queryBusiness } from './services/api';
+import { queryBusiness, submitBusiness } from './services/api';
 
 import { AzureMap, AzureMapsProvider } from 'react-azure-maps'
 import { AuthenticationType } from 'azure-maps-control'
@@ -29,6 +29,11 @@ const App = () => {
       .then(x => setBusinesses(x));
   }, []);
 
+  const handleSubmitBusiness = (values) => {
+    console.log(values)
+    submitBusiness(values);
+  }
+
   return (
     <div className="App">
       <AzureMapsProvider>
@@ -43,7 +48,7 @@ const App = () => {
             isOpen={submitBusinessModelIsOpen}
             shouldCloseOnOverlayClick={true}
             shouldCloseOnEsc={true}>
-            <SubmitBusinessForm />
+            <SubmitBusinessForm onSubmitForm={handleSubmitBusiness} />
             <ModalCloseButton onModalClose={closeModal} />
           </Modal>
         

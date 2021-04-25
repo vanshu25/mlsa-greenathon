@@ -71,6 +71,7 @@ div.button-group {
 
 div.input {
   input[type=text],
+  textarea,
   select {
     display: block;
     width: 100%;
@@ -87,6 +88,10 @@ div.input {
     &:active, &:focus, &:hover {
       border-color: $primary;
     }
+  }
+
+  input[type=file] {
+    display: block;
   }
 
   margin-bottom: 36px;
