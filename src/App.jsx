@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import { Sidebar, SearchBox, SubmitBusinessForm, ModalCloseButton } from './components';
 import { queryBusiness, submitBusiness } from './services/api';
 
-import { AzureMap, AzureMapsProvider } from 'react-azure-maps'
+import { AzureMap, AzureMapsProvider } from 'react-azure-maps' // eslint-disable-next-line 
 import { AuthenticationType, data } from 'azure-maps-control'
 
 import './App.scss';
@@ -22,6 +22,7 @@ const App = () => {
   const [submitBusinessModelIsOpen, setSubmitBusinessModalOpen] = useState(false);
   const closeModal = () => setSubmitBusinessModalOpen(false);
 
+  // eslint-disable-next-line
   const [businesses, setBusinesses] = useState([]);
 
   useEffect(() => {

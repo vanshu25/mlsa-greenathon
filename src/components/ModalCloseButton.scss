@@ -1,6 +1,6 @@
 @import '../styles/variables.scss';
 
-.close-btn {
+button.close-btn {
   position: absolute;
   top: $d-4;
   right: $d-4 + $d-1;
@@ -15,11 +15,9 @@
   width: 25px;
   height: 25px;
 
-  transition: border 0.15s;
+  display: block;
 
-  &:hover {
-    border-color: $primary;
-  }
+  transition: border 0.15s;
 
   > img {
     height: inherit;

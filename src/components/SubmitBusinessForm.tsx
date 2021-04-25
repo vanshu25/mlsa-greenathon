@@ -42,7 +42,7 @@ const initialValues: CreateBusiness = {
   missionStatement: ''
 };
 
-const SubmitBusinessForm = (props = { onSubmitForm: (payload: CreateBusiness) => { } }) => {
+const SubmitBusinessForm = (props = { onSubmitForm: (values: CreateBusiness) => { } }) => {
   return (
     <div>
       <Formik initialValues={initialValues}
