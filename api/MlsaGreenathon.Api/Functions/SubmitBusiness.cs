@@ -58,10 +58,15 @@ namespace MlsaGreenathon.Api.Functions
             var entity = Defaults.Mapper.Map<Business>(request);
 
             // Retrieve position
-            var mapResponse = await _azureMapsServices.GetSearchAddress(new SearchAddressRequest {Query = ""});
-
-            if (!mapResponse.Result.Results.Any())
+            try
+            {
+                await ApplyGeoPositionAsync($"{request.Name} {request.AddressLine} {request.ZipCode} {request.Town}",
+                    entity);
+            }
+            catch
+            {
                 return new BadRequestErrorMessageResult("Couldn't find business");
+            }
 
             // Upload logo to blob
             if (request.Logo != null)
@@ -79,6 +84,18 @@ namespace MlsaGreenathon.Api.Functions
             }
 
             return new OkResult(); // TODO: Return created at result
+        }
+
+        private async Task ApplyGeoPositionAsync(string query, Business entity)
+        {
+            var mapResponse = await _azureMapsServices.GetSearchAddress(new SearchAddressRequest {Query = query});
+
+            if (!mapResponse.Result.Results.Any())
+                throw new Exception("No suitable position found");
+
+            var mapResult = mapResponse.Result.Results.First();
+            entity.Latitude = mapResult.Position.Lat;
+            entity.Longitude = mapResult.Position.Lon;
         }
 
         private static CreateBusinessDto BindModel(IFormCollection form) =>
