@@ -1,9 +1,12 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Web.Http;
+using AzureMapsToolkit;
+using AzureMapsToolkit.Search;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +49,13 @@ namespace MlsaGreenathon.Api.Functions
 
             // Map
             var entity = Defaults.Mapper.Map<Business>(request);
+
+            // Retrieve position
+            var mapService = new AzureMapsServices("");
+            var mapResponse = await mapService.GetSearchAddress(new SearchAddressRequest {Query = ""});
+
+            if (!mapResponse.Result.Results.Any())
+                return new BadRequestErrorMessageResult("Couldn't find business");
 
             // Upload logo to blob
             if (request.Logo != null)
