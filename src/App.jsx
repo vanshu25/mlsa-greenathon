@@ -4,8 +4,8 @@ import Modal from 'react-modal';
 import { Sidebar, SearchBox, SubmitBusinessForm, ModalCloseButton } from './components';
 import { queryBusiness, submitBusiness } from './services/api';
 
-import { AzureMap, AzureMapsProvider } from 'react-azure-maps' // eslint-disable-next-line 
-import { AuthenticationType, data } from 'azure-maps-control'
+import { AzureMap, AzureMapsProvider } from 'react-azure-maps';
+import { AuthenticationType, data } from 'azure-maps-control';
 
 import './App.scss';
 
@@ -27,7 +27,13 @@ const App = () => {
 
   useEffect(() => {
     queryBusiness()
-      .then(x => setBusinesses(x));
+      .then(x => {
+        var collection = x.data.map(z => ({
+          position: new data.Position(z.longitude, z.latitude)
+        }))
+
+        setBusinesses(collection);
+      });
   }, []);
 
   const handleSubmitBusiness = (values) => {

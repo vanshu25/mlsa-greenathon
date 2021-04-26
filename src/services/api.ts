@@ -6,7 +6,9 @@ const requiredFields = ['name', 'industry', 'missionStatement', 'addressLine',
   'town', 'zipCode', 'countryIsoCode', 'logo'];
 
 export interface Business {
-  name: string
+  name: string;
+  longitude: number;
+  latitude: number;
 }
 
 export interface CreateBusiness {
