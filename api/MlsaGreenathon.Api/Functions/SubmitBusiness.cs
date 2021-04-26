@@ -24,13 +24,20 @@ using Newtonsoft.Json;
 
 namespace MlsaGreenathon.Api.Functions
 {
-    public static class SubmitBusiness
+    public class SubmitBusiness
     {
+        private readonly IAzureMapsServices _azureMapsServices;
+
+        public SubmitBusiness(IAzureMapsServices azureMapsServices)
+        {
+            _azureMapsServices = azureMapsServices;
+        }
+
         [FunctionName("SubmitBusiness")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             [Table("Businesses", Connection = Defaults.DefaultStorageConnection)] CloudTable table,
             [Blob("logos/{rand-guid}", FileAccess.Write)] ICloudBlob logoBlob,
@@ -51,8 +58,7 @@ namespace MlsaGreenathon.Api.Functions
             var entity = Defaults.Mapper.Map<Business>(request);
 
             // Retrieve position
-            var mapService = new AzureMapsServices("");
-            var mapResponse = await mapService.GetSearchAddress(new SearchAddressRequest {Query = ""});
+            var mapResponse = await _azureMapsServices.GetSearchAddress(new SearchAddressRequest {Query = ""});
 
             if (!mapResponse.Result.Results.Any())
                 return new BadRequestErrorMessageResult("Couldn't find business");

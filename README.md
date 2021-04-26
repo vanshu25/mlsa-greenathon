@@ -9,10 +9,12 @@ Refer to the dedicated [docs](docs/api.md).
 
 ## Configuration
 ### App Settings
-- `DefaultStorageAccount`: The connection string for the API's Azure storage account
+- `DefaultStorageAccount`: The connection string for the API's Azure storage account.
+- `ConnectionStrings:AzureMaps`: The SKA key for the Azure Maps instance.
 
 ## Contributors
-Brought to you by some fellow MLSA members
+Brought to you by some fellow MLSA members. Wanna contribute to? [Check out how](CONTRIBUTING.md).
+
 <table>
     <tr>
         <td align="center">
