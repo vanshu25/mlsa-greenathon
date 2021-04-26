@@ -36,17 +36,7 @@ namespace MlsaGreenathon.Api.Functions
             if (!req.HasFormContentType)
                 return new BadRequestErrorMessageResult("Request must be form-data");
 
-            var request = new CreateBusinessDto
-            {
-                Name = req.Form["name"],
-                Industry = req.Form["industry"],
-                MissionStatement = req.Form["missionStatement"],
-                AddressLine = req.Form["addressLine"],
-                Town = req.Form["town"],
-                CountryIsoCode = req.Form["countryIsoCode"],
-                ZipCode = req.Form["zipCode"],
-                Logo = req.Form.Files.GetFile("logo")
-            };
+            var request = BindModel(req.Form);
 
 
             // Validate
@@ -74,6 +64,19 @@ namespace MlsaGreenathon.Api.Functions
 
             return new OkResult(); // TODO: Return created at result
         }
+
+        private static CreateBusinessDto BindModel(IFormCollection form) =>
+            new CreateBusinessDto
+            {
+                Name = form["name"],
+                Industry = form["industry"],
+                MissionStatement = form["missionStatement"],
+                AddressLine = form["addressLine"],
+                Town = form["town"],
+                CountryIsoCode = form["countryIsoCode"],
+                ZipCode = form["zipCode"],
+                Logo = form.Files.GetFile("logo")
+            };
 
         private static async Task<Uri> UploadLogoAsync(IFormFile logo, ICloudBlob logoBlob)
         {
