@@ -9,7 +9,7 @@ $sidebar-padding: $d-4;
   bottom: 0;
   left: -$sidebar-width - $sidebar-padding * 2;
   display: flex;
-  z-index: 100;
+  z-index: 10;
 
   transition: left 0.25s;
 

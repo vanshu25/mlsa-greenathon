@@ -1,7 +1,11 @@
-import { Sidebar, SearchBox } from './components';
+import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
 
-import {AzureMap, AzureMapsProvider} from 'react-azure-maps'
-import {AuthenticationType} from 'azure-maps-control'
+import { Sidebar, SearchBox, SubmitBusinessForm, ModalCloseButton } from './components';
+import { queryBusiness, submitBusiness } from './services/api';
+
+import { AzureMap, AzureMapsProvider } from 'react-azure-maps' // eslint-disable-next-line 
+import { AuthenticationType, data } from 'azure-maps-control'
 
 import './App.scss';
 
@@ -12,7 +16,29 @@ const azureMapOptions = {
   },
 }
 
+Modal.setAppElement('#root');
+
 const App = () => {
+  const [submitBusinessModelIsOpen, setSubmitBusinessModalOpen] = useState(false);
+  const closeModal = () => setSubmitBusinessModalOpen(false);
+
+  // eslint-disable-next-line
+  const [businesses, setBusinesses] = useState([]);
+
+  useEffect(() => {
+    queryBusiness()
+      .then(x => setBusinesses(x));
+  }, []);
+
+  const handleSubmitBusiness = (values) => {
+    submitBusiness(values)
+      .then(() => {
+        alert('Thanks for submitting your business. Your business will be displayed on the map once it has been approved by the website owners.');
+        closeModal();
+      })
+      .catch(err => alert(err));
+  }
+
   return (
     <div className="App">
       <AzureMapsProvider>
@@ -22,9 +48,17 @@ const App = () => {
           </div>
           <Sidebar />
           <SearchBox />
+
+          <Modal className="modal"
+            isOpen={submitBusinessModelIsOpen}
+            shouldCloseOnOverlayClick={true}
+            shouldCloseOnEsc={true}>
+            <SubmitBusinessForm onSubmitForm={handleSubmitBusiness} />
+            <ModalCloseButton onModalClose={closeModal} />
+          </Modal>
         
           <div className="fab-overlay">
-            <button className="fab">Add a new business</button>
+            <button className="fab" onClick={() => setSubmitBusinessModalOpen(true)}>Add a new business</button>
           </div>
         </div>
       </AzureMapsProvider>
