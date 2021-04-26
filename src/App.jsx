@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import { Sidebar, SearchBox, SubmitBusinessForm, ModalCloseButton } from './components';
 import { queryBusiness, submitBusiness } from './services/api';
 
-import { AzureMap, AzureMapsProvider } from 'react-azure-maps';
+import { AzureMap, AzureMapFeature, AzureMapsProvider, AzureMapDataSourceProvider, AzureMapLayerProvider } from 'react-azure-maps';
 import { AuthenticationType, data } from 'azure-maps-control';
 
 import './App.scss';
@@ -19,10 +19,14 @@ const azureMapOptions = {
 Modal.setAppElement('#root');
 
 const App = () => {
+  // Modal
   const [submitBusinessModelIsOpen, setSubmitBusinessModalOpen] = useState(false);
   const closeModal = () => setSubmitBusinessModalOpen(false);
+  
+  // Map configuration
+  const [markersLayer] = useState('SymbolLayer');
 
-  // eslint-disable-next-line
+  // Businesses
   const [businesses, setBusinesses] = useState([]);
 
   useEffect(() => {
@@ -50,7 +54,15 @@ const App = () => {
       <AzureMapsProvider>
         <div>
           <div className="map-container">
-            <AzureMap options={azureMapOptions} />
+            <AzureMap options={azureMapOptions}>
+              <AzureMapDataSourceProvider id={'markers AzureMapDataSourceProvider'} options={{ cluster: true, clusterRadius: 2 }}>
+                <AzureMapLayerProvider
+                  id={'markers AzureMapLayerProvider'}
+                  type={markersLayer}/>
+
+                {businesses.map(x => <AzureMapFeature id={'1'} type="Point" properties={{title: 'Pin'}} coordinate={x.position} />)}
+              </AzureMapDataSourceProvider>
+            </AzureMap>
           </div>
           <Sidebar />
           <SearchBox />
