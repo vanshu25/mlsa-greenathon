@@ -1,9 +1,12 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Web.Http;
+using AzureMapsToolkit;
+using AzureMapsToolkit.Search;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,13 +24,20 @@ using Newtonsoft.Json;
 
 namespace MlsaGreenathon.Api.Functions
 {
-    public static class SubmitBusiness
+    public class SubmitBusiness
     {
+        private readonly IAzureMapsServices _azureMapsServices;
+
+        public SubmitBusiness(IAzureMapsServices azureMapsServices)
+        {
+            _azureMapsServices = azureMapsServices;
+        }
+
         [FunctionName("SubmitBusiness")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             [Table("Businesses", Connection = Defaults.DefaultStorageConnection)] CloudTable table,
             [Blob("logos/{rand-guid}", FileAccess.Write)] ICloudBlob logoBlob,
@@ -36,17 +46,7 @@ namespace MlsaGreenathon.Api.Functions
             if (!req.HasFormContentType)
                 return new BadRequestErrorMessageResult("Request must be form-data");
 
-            var request = new CreateBusinessDto
-            {
-                Name = req.Form["name"],
-                Industry = req.Form["industry"],
-                MissionStatement = req.Form["missionStatement"],
-                AddressLine = req.Form["addressLine"],
-                Town = req.Form["town"],
-                CountryIsoCode = req.Form["countryIsoCode"],
-                ZipCode = req.Form["zipCode"],
-                Logo = req.Form.Files.GetFile("logo")
-            };
+            var request = BindModel(req.Form);
 
 
             // Validate
@@ -56,6 +56,17 @@ namespace MlsaGreenathon.Api.Functions
 
             // Map
             var entity = Defaults.Mapper.Map<Business>(request);
+
+            // Retrieve position
+            try
+            {
+                await ApplyGeoPositionAsync($"{request.Name} {request.AddressLine} {request.ZipCode} {request.Town}",
+                    entity);
+            }
+            catch
+            {
+                return new BadRequestErrorMessageResult("Couldn't find business");
+            }
 
             // Upload logo to blob
             if (request.Logo != null)
@@ -74,6 +85,31 @@ namespace MlsaGreenathon.Api.Functions
 
             return new OkResult(); // TODO: Return created at result
         }
+
+        private async Task ApplyGeoPositionAsync(string query, Business entity)
+        {
+            var mapResponse = await _azureMapsServices.GetSearchAddress(new SearchAddressRequest {Query = query});
+
+            if (!mapResponse.Result.Results.Any())
+                throw new Exception("No suitable position found");
+
+            var mapResult = mapResponse.Result.Results.First();
+            entity.Latitude = mapResult.Position.Lat;
+            entity.Longitude = mapResult.Position.Lon;
+        }
+
+        private static CreateBusinessDto BindModel(IFormCollection form) =>
+            new CreateBusinessDto
+            {
+                Name = form["name"],
+                Industry = form["industry"],
+                MissionStatement = form["missionStatement"],
+                AddressLine = form["addressLine"],
+                Town = form["town"],
+                CountryIsoCode = form["countryIsoCode"],
+                ZipCode = form["zipCode"],
+                Logo = form.Files.GetFile("logo")
+            };
 
         private static async Task<Uri> UploadLogoAsync(IFormFile logo, ICloudBlob logoBlob)
         {

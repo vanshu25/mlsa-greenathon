@@ -21,7 +21,12 @@ namespace MlsaGreenathon.Models
 
         public string CountryIsoCode { get; set; }
 
+        // Position
+        public double Longitude { get; set; }
         
+        public double Latitude { get; set; }
+
+
         public bool IsApproved { get; set; }
 
         public DateTime SubmittedAt { get; set; } = DateTime.UtcNow;
