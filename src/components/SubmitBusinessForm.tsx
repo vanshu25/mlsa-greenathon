@@ -74,13 +74,13 @@ const SubmitBusinessForm = (props = { onSubmitForm: (values: CreateBusiness) => 
               </div>
 
               <div className="input">
-                <label htmlFor="town" className="label">Address</label>
+                <label htmlFor="town" className="label">Town</label>
                 <Field name="town" id="town" type="text" />
                 <ErrorMessage name="town" />
               </div>
 
               <div className="input">
-                <label htmlFor="zipCode" className="label">Address</label>
+                <label htmlFor="zipCode" className="label">ZIP Code</label>
                 <Field name="zipCode" id="zipCode" type="text" />
                 <ErrorMessage name="zipCode" />
               </div>
