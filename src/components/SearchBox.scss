@@ -2,14 +2,25 @@
 
 .search-box {
   position: absolute;
-  top: $d-4;
-
-  left: $d-4;
-  right: $d-4;
+  top: $d-1;
+  font-family: Arial, Helvetica, sans-serif;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  left: $d-1;
+  border-style: groove;
+  right: 52px;
 
   @media (min-width: $width-md) {
     left: 100px;
     right: 100px;
+
+    top: $d-4;
+    left: $d-4;
+    right: $d-4;
+
+    padding: $d-3;
   }
 
   @media (min-width: $width-l) {
@@ -21,7 +32,7 @@
   box-shadow: $shadow-element;
   border-radius: $corners;
 
-  padding: $d-3;
+  padding: $d-2;
 
   input {
     width: 100%;
@@ -33,4 +44,9 @@
     outline: none;
     border: none;
   }
+}
+
+p{
+  margin: 10px;
+  font-size: 18px;
 }
